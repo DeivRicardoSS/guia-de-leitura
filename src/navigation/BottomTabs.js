@@ -5,6 +5,7 @@ import HomeScreen from '../screens/HomeScreen';
 import RankScreen from '../screens/RankScreen';
 import LivrosScreen from '../screens/LivrosScreen';
 import ContaScreen from '../screens/ContaScreen';
+import NovoLivroScreen from "../screens/NovoLivroScreen";
 
 import HomeIcon from '../svg/casa.svg';
 import ContaIcon from '../svg/do-utilizador.svg';
@@ -44,6 +45,7 @@ export default function BottomTabs() {
           <Tab.Screen name="Home" component={HomeScreen} />
           <Tab.Screen name="Rank" component={RankScreen} />
           <Tab.Screen name="Livros" component={LivrosScreen} />
+          <Tab.Screen name="Novo" component={NovoLivroScreen} />
           <Tab.Screen name="Conta" component={ContaScreen} />
           
         </Tab.Navigator>

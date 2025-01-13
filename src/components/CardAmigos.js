@@ -41,6 +41,7 @@ function CardAmigos() {
             />  
             <View style={styles.vermais}>
                 <Text>Ver mais 5</Text>
+                <SetaIcon width={20} height={20}/>
             </View>
         </View>
     );
@@ -85,7 +86,8 @@ const styles = StyleSheet.create({
         width: '100%',
         borderTopWidth: 2,
         borderColor: "#FF6F61",
-        padding: 8
+        padding: 8,
+        justifyContent: 'space-between'
     }
 });
 
