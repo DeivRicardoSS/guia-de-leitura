@@ -1,8 +1,8 @@
-import { View, Text, SafeAreaView, TextInput, Button } from "react-native";
+import { View, Text, SafeAreaView, TextInput, Button, StyleSheet } from "react-native";
 import { loginUser } from "../api/api";
 import React, {useState} from "react";
-import loginStyles from "../styles/loginStyles";
 import Input1 from "../components/Input1";
+import Button1 from "../components/Button1";
 
 function LoginScreen({ navigation }){
     const [email, setEmail] = useState('');
@@ -22,11 +22,29 @@ function LoginScreen({ navigation }){
     }
 
     return (
-        <SafeAreaView style={loginStyles.container}>
-            
+        <SafeAreaView style={styles.container}>
+            <Input1
+                placeholder={"Email"}
+            />
+            <Input1
+                placeholder={"Senha"}
+            />
+            <Button1
+                value={"Iniciar Sessão"}
+            />
         </SafeAreaView>
 
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        gap: 15,
+        paddingLeft: 20,
+        paddingRight: 20,
+        justifyContent: 'center',
+        height: '100vh'
+    }
+});
 
 export default LoginScreen;
