@@ -2,10 +2,10 @@ import { View, Text, SafeAreaView, TextInput, Button, StyleSheet } from "react-n
 import { loginUser } from "../api/api";
 import React, {useState} from "react";
 import Input1 from "../components/Input1";
-import Button2 from "../components/Button2";
+import Button1 from "../components/Button1";
 import Root from "../styles/root";
 
-function SignupScreen({ navigation }){
+function Signup2Screen({ navigation }){
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
 
@@ -25,8 +25,8 @@ function SignupScreen({ navigation }){
     return (
         <SafeAreaView style={styles.container}>
             <View>
-                <Text style={styles.title}>Informações Básicas</Text>
-                <Text style={styles.subtitle}>Queremos te conhecer melhor!</Text>
+                <Text style={styles.title}>Informações de Acesso</Text>
+                <Text style={styles.subtitle}>Defina suas credenciais.</Text>
             </View>
             <Input1
                 placeholder={"Nome Completo"}
@@ -37,9 +37,9 @@ function SignupScreen({ navigation }){
             <Input1
                 placeholder={"Data de Nascimento"}
             />
-            <Button2
-                value={"Próxima Etapa"}
-                onPress={() => navigation.navigate('Cadastro 2')}
+            <Button1
+                value={"Realizar Cadastro"}
+                onPress={() => navigation.navigate('Home')}
             />
         </SafeAreaView>
 
@@ -66,4 +66,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default SignupScreen;
+export default Signup2Screen;

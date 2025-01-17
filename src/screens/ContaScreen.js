@@ -5,7 +5,7 @@ import CardAmigos from '../components/CardAmigos';
 
 function ContaScreen() {
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.userArea}>
                 <Image source={{uri: 'https://avatars.githubusercontent.com/u/131066052?v=4'}}
                 style={styles.img}
@@ -31,7 +31,7 @@ function ContaScreen() {
             
             
             
-        </SafeAreaView>
+        </View>
     );
 }
 

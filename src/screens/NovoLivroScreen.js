@@ -1,31 +1,41 @@
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Input2 from '../components/Input2';
+import Input1 from '../components/Input1';
+import Button1 from '../components/Button1';
+import Root from '../styles/root';
 function NovoLivroScreen() {
     return (
-        <SafeAreaView style={styles.container}>
-            <View>
-                <Text>Adicionar Livro</Text>
-            </View>
+        <View style={styles.container}>
             <View style={styles.sec1}>
                 <Image style={styles.img}/>
-                <View style={styles.inputs}>
-                    <Input2
-                        placeholder="Título"
-                    />
-                    <Input2
-                        placeholder="Autor"
-                    />
-                    <Input2
-                        placeholder="Gênero"
-                    />
-                </View>
+                <Input1
+                    placeholder="Título"
+                />
+                <Input1
+                    placeholder="Autor"
+                />
+                <Input1
+                    placeholder="Gênero"
+                />
             </View>
             <View>
                 <Text>Páginas</Text>
             </View>
+            <View style={styles.sec2}>
+                <Input1
+                    style={styles.input}
+                    placeholder="Quantidade de Páginas"
+                />
+                <Input1
+                    style={styles.input}
+                    placeholder="Páginas Lidas"
+                />
+            </View>
+            <Button1
+                value="Adicionar Livro"
+            />
             
-        </SafeAreaView>
+        </View>
     );
 }
 
@@ -33,22 +43,27 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
         padding: 20,
-        gap: 5
+        gap: 10
     },
     sec1: {
-        flexDirection: 'row',
         width: '100%',
         alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: 10
+    },
+    sec2: {
+        flexDirection: 'row',
+        gap: 10,
         justifyContent: 'space-between'
     },
-    inputs: {
+    input: {
         width: '48%',
-        gap: 15
+        fontSize: 12
     },
     img: {
-        width: '48%',
-        height: 250,
-        backgroundColor: 'gray'
+        width: 115,
+        height: 158,
+        backgroundColor: Root.fundo2
     }
 });
 

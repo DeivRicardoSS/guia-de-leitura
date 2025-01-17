@@ -2,11 +2,11 @@ import { StyleSheet } from "react-native";
 import { TextInput, View } from "react-native";
 import Root from "../styles/root";
 
-function Input1({placeholder, onChange}) {
+function Input1({placeholder, onChange, style}) {
     return (
         
         <TextInput
-                style={styles.container}
+                style={[styles.container, style]}
                 placeholder={placeholder}
                 // value={value}
                 onChangeText={onChange}
@@ -20,7 +20,7 @@ function Input1({placeholder, onChange}) {
 const styles = StyleSheet.create({
     container: {
         width: "100%",
-        height: 50,
+        height: 60,
         padding: 20,
         color: Root.placeholder,
         backgroundColor: Root.fundo2,

@@ -20,7 +20,9 @@ export default function BottomTabs() {
       
         <Tab.Navigator 
         screenOptions={({route}) => ({
-          headerShown: false,
+          headerShown: true,
+          headerTitleAlign: 'center',
+          tabBarShowLabel: false,
           tabBarIcon:({ color, size}) => {
             if (route.name === 'Home') {
               return <HomeIcon width={size} height={size} fill={color} />
@@ -30,7 +32,7 @@ export default function BottomTabs() {
               return <BooksIcon width={size} height={size} fill={color} />
             } else if (route.name === 'Conta') {
               return <ContaIcon width={size} height={size} fill={color} />
-            } else if (route.name === 'Novo') {
+            } else if (route.name === 'Novo Livro') {
               return <NewIcon width={size} height={size} fill={color} />
             }
           },
@@ -45,7 +47,7 @@ export default function BottomTabs() {
           <Tab.Screen name="Home" component={HomeScreen} />
           <Tab.Screen name="Rank" component={RankScreen} />
           <Tab.Screen name="Livros" component={LivrosScreen} />
-          <Tab.Screen name="Novo" component={NovoLivroScreen} />
+          <Tab.Screen name="Novo Livro" component={NovoLivroScreen} />
           <Tab.Screen name="Conta" component={ContaScreen} />
           
         </Tab.Navigator>

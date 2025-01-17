@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import { TouchableOpacity, View, Text } from "react-native";
 import Root from "../styles/root";
 
-function Button1({value, onPress}) {
+function Button2({value, onPress}) {
     return (
         
         <TouchableOpacity
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         width: "100%",
         height: 60,
         padding: 20,
-        backgroundColor: Root.primaria,
+        backgroundColor: Root.fundo2,
         
 
         display: "flex",
@@ -33,14 +33,15 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         justifyContent: 'center',
         alignItems: 'center',
-
+        borderWidth: 2,
+        borderColor: Root.primaria,
         borderRadius: 10,
         boxShadow: '0px 8px 0px 0px #3F38BA'
     },
     text: {
-        color: Root.fundo,
+        color: Root.title,
         fontWeight: 600,
     }
 });
 
-export default Button1;
+export default Button2;

@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
         justifyContent: 'center',
-        height: '100vh'
+        flex: 1
     }
 });
 
