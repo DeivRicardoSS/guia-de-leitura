@@ -15,7 +15,13 @@ export const confirmUser = async (userData) => {
     return response.data;
 }
 
+
 export const loginUser = async (userData) => {
     const response = await API.post(`/user/login`, userData);
+    return response.data;
+}
+
+export const novoLivro = async (userData, upload) => {
+    const response = await API.post(`/livro/novo`, upload, userData);
     return response.data;
 }
