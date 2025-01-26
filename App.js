@@ -9,21 +9,6 @@ import StackNavigator from './src/navigation/StackNavigator';
 
 export default function App() {
 
-  const loadFonts = async() => {
-    await Font.loadAsync({
-        'bold': require('./assets/fonts/ReadexPro-Bold.ttf'),
-        'extra-light': require('./assets/fonts/ReadexPro-ExtraLight.ttf'),
-        'pro-light': require('./assets/fonts/ReadexPro-Light.ttf'),
-        'medium': require('./assets/fonts/ReadexPro-Medium.ttf'),
-        'regular': require('./assets/fonts/ReadexPro-Regular.ttf'),
-        'semi-bold': require('./assets/fonts/ReadexPro-SemiBold.ttf')
-    });
-  }
-
-  React.useEffect(()=> {
-    loadFonts();
-  }, []);
-
   useEffect(() => {
     NavigationBar.setBackgroundColorAsync('#F5F5F5');  // Cor de fundo (exemplo com roxo)
     

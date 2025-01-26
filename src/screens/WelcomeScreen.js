@@ -3,8 +3,39 @@ import { Image, View, StyleSheet, Text } from "react-native";
 import Button1 from "../components/Button1";
 import Button2 from "../components/Button2";
 import Root from "../styles/root";
+import { AsyncStorage } from "react-native";
+import { confirmUser } from "../api/api";
+import { useEffect } from "react";
+import * as SecureStore from 'expo-secure-store';
 
 function WelcomeScreen({navigation}) {
+    useEffect(() => {
+        const checkUserLogin = async () => {
+            try {
+                // Obtém o usuário armazenado de forma assíncrona
+                const usuario = await SecureStore.getItemAsync('user');
+                
+                if (usuario) {
+                    // Converte para objeto JavaScript, já que SecureStore armazena como string
+                    const usuarioObj = JSON.parse(usuario); 
+                    const response = await confirmUser({ userId: usuarioObj.userId });
+
+                    console.log("response", response);
+
+                    // Verifica se o login foi bem-sucedido e navega para a tela 'Home'
+                    if (response.userId == usuarioObj.userId) {
+                        navigation.navigate('Home');
+                    }
+                }
+            } catch (error) {
+                console.log("Erro ao verificar o login:", error);
+            }
+        };
+
+        checkUserLogin();
+    }, [navigation]);
+    
+
     return (
         <View style={{flex: 1}}>
             <Image

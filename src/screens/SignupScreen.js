@@ -2,24 +2,26 @@ import { View, Text, SafeAreaView, TextInput, Button, StyleSheet } from "react-n
 import { loginUser } from "../api/api";
 import React, {useState} from "react";
 import Input1 from "../components/Input1";
+import InputDate from "../components/InputDate";
 import Button2 from "../components/Button2";
 import Root from "../styles/root";
+import { addCadastro } from "../localdata/Cadastro";
 
 function SignupScreen({ navigation }){
-    const [email, setEmail] = useState('');
-    const [error, setError] = useState('');
+    const [nome, setNome] = useState('');
+    const [sexo, setSexo] = useState('');
+    const [nascimento, setNascimento] = useState('');
+    
+
 
     const handleLogin = async () => {
-        try {
-            const user = await loginUser(email);
-            if(user){
-                navigation.navigate('Home', {user});
-            } else {
-                setError('Somenthing went wrong');
-            }
-        } catch (error) {
-            setError(err)
-        }
+        if (!nome || !sexo || !nascimento) return;
+        addCadastro({
+            nome: nome,
+            sexo: sexo,
+            nascimento: nascimento
+        });
+        navigation.navigate('Cadastro 2');
     }
 
     return (
@@ -30,16 +32,20 @@ function SignupScreen({ navigation }){
             </View>
             <Input1
                 placeholder={"Nome Completo"}
+                onChange={setNome}
             />
             <Input1
                 placeholder={"Sexo"}
+                onChange={setSexo}
             />
-            <Input1
+            <InputDate
                 placeholder={"Data de Nascimento"}
+                value={nascimento}
+                onChange={setNascimento}
             />
             <Button2
                 value={"Próxima Etapa"}
-                onPress={() => navigation.navigate('Cadastro 2')}
+                onPress={handleLogin}
             />
         </SafeAreaView>
 

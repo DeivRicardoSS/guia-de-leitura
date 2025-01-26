@@ -2,14 +2,16 @@ import { StyleSheet } from "react-native";
 import { TextInput, View } from "react-native";
 import Root from "../styles/root";
 
-function Input1({placeholder, onChange, style}) {
+function Input1({placeholder, onChange, style, value, secureTextEntry, keyboardType}) {
     return (
         
         <TextInput
                 style={[styles.container, style]}
                 placeholder={placeholder}
-                // value={value}
+                value={value}
                 onChangeText={onChange}
+                secureTextEntry={secureTextEntry}
+                keyboardType={keyboardType}
         />          
         
     );

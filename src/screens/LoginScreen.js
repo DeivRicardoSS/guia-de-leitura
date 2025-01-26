@@ -3,21 +3,24 @@ import { loginUser } from "../api/api";
 import React, {useState} from "react";
 import Input1 from "../components/Input1";
 import Button1 from "../components/Button1";
+import { addUser } from "../localdata/User";
 
 function LoginScreen({ navigation }){
     const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
     const [error, setError] = useState('');
 
     const handleLogin = async () => {
         try {
-            const user = await loginUser(email);
+            const user = await loginUser({email, senha});
             if(user){
-                navigation.navigate('Home', {user});
+                addUser(user);
+                navigation.navigate('Home');
             } else {
-                setError('Somenthing went wrong');
+                setError('Usuário não encontrado');
             }
         } catch (error) {
-            setError(err)
+            setError(error)
         }
     }
 
@@ -25,12 +28,16 @@ function LoginScreen({ navigation }){
         <SafeAreaView style={styles.container}>
             <Input1
                 placeholder={"Email"}
+                onChange={setEmail}
             />
             <Input1
                 placeholder={"Senha"}
+                onChange={setSenha}
             />
+            <Text>{error}</Text>
             <Button1
                 value={"Iniciar Sessão"}
+                onPress={handleLogin}
             />
         </SafeAreaView>
 

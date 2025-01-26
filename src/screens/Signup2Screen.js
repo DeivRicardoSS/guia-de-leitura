@@ -2,44 +2,56 @@ import { View, Text, SafeAreaView, TextInput, Button, StyleSheet } from "react-n
 import { loginUser } from "../api/api";
 import React, {useState} from "react";
 import Input1 from "../components/Input1";
-import Button1 from "../components/Button1";
+import Button2 from "../components/Button2";
 import Root from "../styles/root";
+import { cadastro, addCadastro } from "../localdata/Cadastro";
 
 function Signup2Screen({ navigation }){
     const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
+    const [confSemha, setConfSenha] = useState('');
     const [error, setError] = useState('');
 
     const handleLogin = async () => {
-        try {
-            const user = await loginUser(email);
-            if(user){
-                navigation.navigate('Home', {user});
-            } else {
-                setError('Somenthing went wrong');
-            }
-        } catch (error) {
-            setError(err)
+        if (!email || !senha || !confSemha){
+            setError('Preencha todos os dados');
+            return;
+        } 
+
+        if (senha !== confSemha){
+            setError('As senhas devem ser iguais');
+            return;
         }
+
+
+        addCadastro({email: email, senha: senha});
+        navigation.navigate('Cadastro 3');
     }
 
     return (
         <SafeAreaView style={styles.container}>
             <View>
                 <Text style={styles.title}>Informações de Acesso</Text>
-                <Text style={styles.subtitle}>Defina suas credenciais.</Text>
+                <Text style={styles.subtitle}>Defina suas credenciais {cadastro.nome}.</Text>
             </View>
             <Input1
-                placeholder={"Nome Completo"}
+                placeholder={"Email"}
+                onChange={setEmail}
             />
             <Input1
-                placeholder={"Sexo"}
+                placeholder={"Senha"}
+                onChange={setSenha}
+                secureTextEntry={true}
             />
             <Input1
-                placeholder={"Data de Nascimento"}
+                placeholder={"Confirme sua Senha"}
+                onChange={setConfSenha}
+                secureTextEntry={true}
             />
-            <Button1
-                value={"Realizar Cadastro"}
-                onPress={() => navigation.navigate('Home')}
+            <Text style={{color: 'red'}}>{error}</Text>
+            <Button2
+                value={"Próxima Etapa"}
+                onPress={handleLogin}
             />
         </SafeAreaView>
 
