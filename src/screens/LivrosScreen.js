@@ -1,11 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Livro from '../components/Livro';
+import { user } from '../localdata/User';
 
 function LivrosScreen() {
     return (
-        <View style={styles.container}>
-            <Livro 
+        <ScrollView contentContainerStyle={styles.container}>
+            {/* <Livro 
                 img={"https://i.imgflip.com/6d6erq.jpg"}
                 titulo={"Sigma"}
                 autor={"SigmaBoy"}
@@ -17,15 +18,27 @@ function LivrosScreen() {
                 titulo={"Sigma"}
                 autor={"SigmaBoy"}
                 progresso={20}
-            />
-        </View>
+            /> */}
+
+            {
+                user.livros.map((livro, index) => (
+                    <Livro
+                        img={`http://192.168.0.102:3000/${livro.link}`}
+                        titulo={livro.nome}
+                        autor={livro.autor}
+                        progresso={parseInt((livro.pagAtual / livro.quantPaginas) * 100 )}
+                    />
+                ))
+            }
+
+            
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         padding: 20,
-        gap: 20
     }
 });
 

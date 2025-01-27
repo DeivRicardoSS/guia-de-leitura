@@ -33,6 +33,7 @@ function LoginScreen({ navigation }){
             <Input1
                 placeholder={"Senha"}
                 onChange={setSenha}
+                secureTextEntry={true}
             />
             <Text>{error}</Text>
             <Button1

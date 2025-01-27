@@ -28,7 +28,7 @@ function Signup3Screen({ navigation }){
                 avatar: cadastro.avatar,
                 userId: response.data
             });
-            navigation.navigate('Home');
+            navigation.navigate('Login');
         }
     }
 

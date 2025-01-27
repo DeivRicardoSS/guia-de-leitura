@@ -34,7 +34,9 @@ const styles = StyleSheet.create({
         padding: 20,
         borderRadius: 8,
         boxShadow: '0px 4px 4px #00000025',
-        gap: 20
+        gap: 20,
+        marginBottom: 10,
+        marginTop: 10
     },
     img: {
         width: 77,

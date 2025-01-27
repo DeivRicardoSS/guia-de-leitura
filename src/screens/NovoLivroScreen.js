@@ -1,12 +1,18 @@
-import { StyleSheet, Text, View, Image, Alert, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image, Alert, ScrollView, ActivityIndicator } from 'react-native';
 import { useState } from 'react';
 import Input1 from '../components/Input1';
 import Button1 from '../components/Button1';
+import Button2 from '../components/Button2';
 import { novoLivro } from '../api/api';
 import { user } from '../localdata/User';
 import * as ImagePicker from 'expo-image-picker';
+import axios from 'axios';
+import Root from '../styles/root';
 
-function NovoLivroScreen() {
+function NovoLivroScreen({ navigation }) {
+    const [loading, setLoading] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+
     const [photo, setPhoto] = useState(null);
     const [nome, setNome] = useState('');
     const [autor, setAutor] = useState('');
@@ -22,6 +28,7 @@ function NovoLivroScreen() {
         }
 
         try {
+            
             const result = await ImagePicker.launchCameraAsync({
                 allowsEditing: true,
                 aspect: [3, 4],
@@ -54,22 +61,43 @@ function NovoLivroScreen() {
     };
 
     const enviarLivro = async () => {
+        setLoading(true);
+        setShowModal(true);
         if (!validateInputs()) return;
 
+        const formData = new FormData();
+        formData.append('nome', nome);
+        formData.append('autor', autor);
+        formData.append('genero', genero);
+        formData.append('quantPaginas', paginas);
+        formData.append('pagAtual', paginasLidas);
+        
+        formData.append('file', {
+            uri: photo,
+            name: 'photo.jpg',
+            type: 'image/jpeg',
+        })
+
+        formData.append('userId', user.userId);
+
         try {
-            await novoLivro({
-                nome,
-                autor,
-                genero,
-                paginas: parseInt(paginas),
-                paginasLidas: parseInt(paginasLidas),
-                file: photo,
-                userId: user.userId
+            const response = await axios.post('http://192.168.0.102:3000/livro/novo', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
             });
-            Alert.alert('Sucesso', 'Livro adicionado com sucesso!');
+            Alert.alert('Livro cadastrado com sucesso!');
+            setPhoto(null);
+            setNome('');
+            setAutor('');
+            setGenero('');
+            
         } catch (error) {
-            console.error('Erro ao adicionar livro:', error);
-            Alert.alert('Erro', 'Não foi possível adicionar o livro. Tente novamente.');
+            alert('Erro ao cadastrar livro: ' + error.message);
+        } finally {
+            setLoading(false);
+            setShowModal(false);
+            navigation.navigate('Livros');
         }
     };
 
@@ -84,7 +112,13 @@ function NovoLivroScreen() {
                 )}
             </View>
 
-            <Button1 value="Tirar Foto" onPress={handlePickImage} />
+            <Button2 
+            value="Tirar Foto" 
+            onPress={handlePickImage} 
+            style={{
+                marginBottom: 20
+            }}
+            />
 
             {/* Inputs */}
             <View style={styles.inputsContainer}>
@@ -112,7 +146,17 @@ function NovoLivroScreen() {
             </View>
 
             {/* Botão de Enviar */}
-            <Button1 value="Adicionar Livro" onPress={enviarLivro} />
+            <Button1 
+            value="Adicionar Livro" 
+            onPress={enviarLivro} 
+            style={{marginTop: 20}}
+            />
+
+            {loading ? (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color={Root.primaria} />
+            </View>
+            ): null}
         </ScrollView>
     );
 }
@@ -122,7 +166,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
         backgroundColor: '#fff',
-        gap: 10,
+        gap: 20,
     },
     previewContainer: {
         alignItems: 'center',
@@ -153,6 +197,20 @@ const styles = StyleSheet.create({
     },
     input: {
         flex: 1,
+        fontSize: 12,
+    },
+    loadingContainer: {
+        position: 'absolute',
+        width: '150%',
+        height: '150%',
+        top: '50%',
+        left: '50%',
+        transform: [{ translateX: '-50%' }, { translateY: '-50%' }],
+        
+        borderColor: Root.primaria,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
 });
 

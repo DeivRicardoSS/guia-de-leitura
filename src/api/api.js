@@ -23,5 +23,8 @@ export const loginUser = async (userData) => {
 
 export const novoLivro = async (userData, upload) => {
     const response = await API.post(`/livro/novo`, upload, userData);
+    const result = await confirmUser({ userId: user.userId });
+    if(result) addUser(result);
     return response.data;
+    
 }

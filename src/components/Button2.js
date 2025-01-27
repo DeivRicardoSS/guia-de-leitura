@@ -2,11 +2,11 @@ import { StyleSheet } from "react-native";
 import { TouchableOpacity, View, Text } from "react-native";
 import Root from "../styles/root";
 
-function Button2({value, onPress}) {
+function Button2({value, onPress, style}) {
     return (
         
         <TouchableOpacity
-                style={styles.container}
+                style={[styles.container, style]}
                 onPress={onPress}
         >
          <Text style={styles.text}>

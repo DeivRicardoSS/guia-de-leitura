@@ -7,6 +7,7 @@ import { AsyncStorage } from "react-native";
 import { confirmUser } from "../api/api";
 import { useEffect } from "react";
 import * as SecureStore from 'expo-secure-store';
+import { addUser } from "../localdata/User";
 
 function WelcomeScreen({navigation}) {
     useEffect(() => {
@@ -24,6 +25,7 @@ function WelcomeScreen({navigation}) {
 
                     // Verifica se o login foi bem-sucedido e navega para a tela 'Home'
                     if (response.userId == usuarioObj.userId) {
+                        addUser(response)
                         navigation.navigate('Home');
                     }
                 }
