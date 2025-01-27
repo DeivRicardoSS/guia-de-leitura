@@ -2,28 +2,29 @@ import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Livro from '../components/Livro';
 import { user } from '../localdata/User';
+import { useCallback, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+
+
 
 function LivrosScreen() {
+    let [livros, setLivros] = useState([])
+
+    useFocusEffect(
+        useCallback(()=>{
+            setLivros(user.livros);
+        }, [])
+    );
+
+
     return (
         <ScrollView contentContainerStyle={styles.container}>
-            {/* <Livro 
-                img={"https://i.imgflip.com/6d6erq.jpg"}
-                titulo={"Sigma"}
-                autor={"SigmaBoy"}
-                progresso={20}
-            />
-
-            <Livro 
-                img={"https://i.imgflip.com/6d6erq.jpg"}
-                titulo={"Sigma"}
-                autor={"SigmaBoy"}
-                progresso={20}
-            /> */}
 
             {
-                user.livros.map((livro, index) => (
+                livros.map((livro, index) => (
                     <Livro
-                        img={`http://192.168.0.102:3000/${livro.link}`}
+                        key={index}
+                        img={`http://10.81.0.5:3000/${livro.link}`}
                         titulo={livro.nome}
                         autor={livro.autor}
                         progresso={parseInt((livro.pagAtual / livro.quantPaginas) * 100 )}
@@ -31,7 +32,6 @@ function LivrosScreen() {
                 ))
             }
 
-            
         </ScrollView>
     );
 }

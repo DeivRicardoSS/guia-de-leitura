@@ -9,6 +9,7 @@ import { signup } from '../api/api';
 
 function Signup3Screen({ navigation }){
     const [selectedOption, setSelectedOption] = useState(null);
+    const [erro, setErro] = useState(null);
 
   // Função para alternar a seleção
     const handleSelect = (option) => {
@@ -16,20 +17,25 @@ function Signup3Screen({ navigation }){
     };
 
     async function handleLogin() {
-        if (selectedOption) {
-            addCadastro({avatar: selectedOption});
-            const response = await signup(cadastro);
-            addUser({
-                nome: cadastro.nome,
-                nascimento: cadastro.nascimento,
-                sexo: cadastro.sexo,
-                email: cadastro.email,
-                senha: cadastro.senha,
-                avatar: cadastro.avatar,
-                userId: response.data
-            });
-            navigation.navigate('Login');
+        try {
+            if (selectedOption) {
+                addCadastro({avatar: selectedOption});
+                const response = await signup(cadastro);
+                addUser({
+                    nome: cadastro.nome,
+                    nascimento: cadastro.nascimento,
+                    sexo: cadastro.sexo,
+                    email: cadastro.email,
+                    senha: cadastro.senha,
+                    avatar: cadastro.avatar,
+                    userId: response.data
+                });
+                navigation.navigate('Login');
+            }
+        } catch (erro){
+            setErro(erro)
         }
+        
     }
 
     return (
@@ -63,6 +69,7 @@ function Signup3Screen({ navigation }){
                     style={styles.img}
                     />
                 </TouchableOpacity>
+                {erro? (<Text>{erro}</Text>) : null}
             </View>
             <Button1
                 value={'Continuar'}

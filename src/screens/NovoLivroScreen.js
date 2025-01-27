@@ -4,10 +4,11 @@ import Input1 from '../components/Input1';
 import Button1 from '../components/Button1';
 import Button2 from '../components/Button2';
 import { novoLivro } from '../api/api';
-import { user } from '../localdata/User';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import Root from '../styles/root';
+import { confirmUser } from '../api/api';
+import { user, addUser } from '../localdata/User';
 
 function NovoLivroScreen({ navigation }) {
     const [loading, setLoading] = useState(false);
@@ -81,7 +82,7 @@ function NovoLivroScreen({ navigation }) {
         formData.append('userId', user.userId);
 
         try {
-            const response = await axios.post('http://192.168.0.102:3000/livro/novo', formData, {
+            const response = await axios.post('http://10.81.0.5:3000/livro/novo', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -91,6 +92,10 @@ function NovoLivroScreen({ navigation }) {
             setNome('');
             setAutor('');
             setGenero('');
+            const usuario = await confirmUser();
+            addUser(usuario);
+            console.log(usuario)
+            console.log(user);
             
         } catch (error) {
             alert('Erro ao cadastrar livro: ' + error.message);

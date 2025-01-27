@@ -2,7 +2,7 @@ import axios from "axios";
 import { user } from "../localdata/User";
 
 const API = axios.create({
-    baseURL: 'http://192.168.0.102:3000'
+    baseURL: 'http://10.81.0.5:3000'
 });
 
 export const signup = async (userData) => {
