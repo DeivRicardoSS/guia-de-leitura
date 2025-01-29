@@ -7,7 +7,7 @@ import { novoLivro } from '../api/api';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import Root from '../styles/root';
-import { confirmUser } from '../api/api';
+import { confirmUser, ip } from '../api/api';
 import { user, addUser } from '../localdata/User';
 
 function NovoLivroScreen({ navigation }) {
@@ -82,7 +82,7 @@ function NovoLivroScreen({ navigation }) {
         formData.append('userId', user.userId);
 
         try {
-            const response = await axios.post('http://10.81.0.5:3000/livro/novo', formData, {
+            const response = await axios.post(`http://${ip}:3000/livro/novo`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -185,6 +185,7 @@ const styles = StyleSheet.create({
         width: 100,
         height: 150,
         borderRadius: 10,
+        objectFit: 'cover',
     },
     inputsContainer: {
         marginVertical: 10,

@@ -6,6 +6,7 @@ import WelcomeScreen from "../screens/WelcomeScreen"
 import SignupScreen from "../screens/SignupScreen"
 import Signup2Screen from "../screens/Signup2Screen"
 import Signup3Screen from "../screens/Signup3Screen"
+import LivroScreen from "../screens/LivroScreen";
 
 const Stack = createStackNavigator();
 
@@ -20,6 +21,7 @@ const StackNavigator = () => {
             <Stack.Screen name= "Cadastro 1" component={SignupScreen} options={{headerShown: true}}/>
             <Stack.Screen name= "Cadastro 2" component={Signup2Screen} options={{headerShown: true}}/>
             <Stack.Screen name= "Cadastro 3" component={Signup3Screen} options={{headerShown: true}}/>
+            <Stack.Screen name= "Livro" component={LivroScreen} options={{headerShown: true}}/>
         </Stack.Navigator>
     );
 }

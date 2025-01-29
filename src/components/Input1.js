@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
         color: Root.placeholder,
         backgroundColor: Root.fundo2,
         fontWeight: 600,
-
         display: "flex",
         flexDirection: "row",
         overflow: 'hidden',

@@ -11,13 +11,17 @@ function LoginScreen({ navigation }){
     const [error, setError] = useState('');
 
     const handleLogin = async () => {
+        if (!email || !senha){
+            setError('Preencha todos os dados');
+            return;
+        }
         try {
-            const user = await loginUser({email, senha});
-            if(user){
-                addUser(user);
+            const response = await loginUser({email, senha});
+            if(response.success){
+                addUser(response.response);
                 navigation.navigate('Home');
             } else {
-                setError('Usuário não encontrado');
+                setError(response.error);
             }
         } catch (error) {
             setError(error)
@@ -35,7 +39,7 @@ function LoginScreen({ navigation }){
                 onChange={setSenha}
                 secureTextEntry={true}
             />
-            <Text>{error}</Text>
+            {error? <Text style={{color: 'red'}}>{error}</Text> : null}
             <Button1
                 value={"Iniciar Sessão"}
                 onPress={handleLogin}
