@@ -1,7 +1,7 @@
 import axios from "axios";
 import { user } from "../localdata/User";
 
-export const ip = '192.168.0.106';
+export const ip = '192.168.0.104';
 
 const API = axios.create({
 baseURL: `http://${ip}:3000`
@@ -28,7 +28,6 @@ export const novoLivro = async (userData, upload) => {
     const result = await confirmUser({ userId: user.userId });
     if(result) addUser(result);
     return response.data;
-    
 }
 
 export const updateLivro = async (userData) => {

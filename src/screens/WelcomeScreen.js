@@ -7,9 +7,11 @@ import { AsyncStorage } from "react-native";
 import { confirmUser } from "../api/api";
 import { useEffect } from "react";
 import * as SecureStore from 'expo-secure-store';
-import { addUser } from "../localdata/User";
+import { useUser, useUpdateUser } from "../localdata/User";
 
 function WelcomeScreen({navigation}) {
+    const { user } = useUser();
+    const { updateUser } = useUpdateUser();
     useEffect(() => {
         const checkUserLogin = async () => {
             try {
@@ -25,8 +27,11 @@ function WelcomeScreen({navigation}) {
 
                     // Verifica se o login foi bem-sucedido e navega para a tela 'Home'
                     if (response.userId == usuarioObj.userId) {
-                        addUser(response)
-                        navigation.navigate('Home');
+                        await updateUser(response)
+                        console.log('response', response.userId);
+                        console.log('local', user.userId)
+
+                        navigation.navigate("Home");
                     }
                 }
             } catch (error) {

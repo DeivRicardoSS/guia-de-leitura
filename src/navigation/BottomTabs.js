@@ -44,8 +44,8 @@ export default function BottomTabs() {
           }
         })}
         >
-          <Tab.Screen name="Home" component={HomeScreen} />
-          <Tab.Screen name="Rank" component={RankScreen} />
+          {/* <Tab.Screen name="Home" component={HomeScreen} /> */}
+          {/* <Tab.Screen name="Rank" component={RankScreen} /> */}
           <Tab.Screen name="Livros" component={LivrosScreen} options={{unmountOnBlur: true}} />
           <Tab.Screen name="Novo Livro" component={NovoLivroScreen} />
           <Tab.Screen name="Conta" component={ContaScreen} />

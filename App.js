@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 import { Text, View, ActivityIndicator, SafeAreaView } from 'react-native';
 import * as Font from 'expo-font';
 import * as NavigationBar from 'expo-navigation-bar';
+import { UserProvider } from "./src/localdata/User";
 const { useEffect } = React;
+
 
 import StackNavigator from './src/navigation/StackNavigator';
 
@@ -16,9 +18,11 @@ export default function App() {
   }, []);
 
   return (
+    <UserProvider>
+      <NavigationContainer style={{ fontFamily: 'regular'}}>
+        <StackNavigator/>
+      </NavigationContainer>
+    </UserProvider>
     
-    <NavigationContainer style={{ fontFamily: 'regular'}}>
-      <StackNavigator/>
-    </NavigationContainer>
   );
 }

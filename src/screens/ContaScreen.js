@@ -2,9 +2,10 @@ import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Estatisticas from '../components/Estatisticas';
 import CardAmigos from '../components/CardAmigos';
-import { user } from '../localdata/User';
+import { useUser } from '../localdata/User';
 
 function ContaScreen() {
+    const { user } = useUser();
     const avatarMap = {
         'Avatar-1': require('../../assets/avatars/Avatar-1.png'),
         'Avatar-2': require('../../assets/avatars/Avatar-2.png'),
@@ -27,13 +28,16 @@ function ContaScreen() {
                 <Text style={styles.title}>Estatísticas</Text>
             </View>
             
-            <Estatisticas/>
+            <Estatisticas
+                xp={user.xpTotal}
+                livros={user.livros.length}
+            />
             
-            <View style={styles.sectionTitles}>
+            {/* <View style={styles.sectionTitles}>
                 <Text style={styles.title}>Amigos</Text>
                 <Text style={[styles.title, styles.link]}>Adicionar Amigos</Text>
             </View>
-            <CardAmigos/>
+            <CardAmigos/> */}
             
             
             

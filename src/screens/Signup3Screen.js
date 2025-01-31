@@ -6,10 +6,13 @@ import Root from "../styles/root";
 import { cadastro, addCadastro } from "../localdata/Cadastro";
 import { addUser } from "../localdata/User";
 import { signup } from '../api/api';
+import { useUpdateUser } from '../localdata/User';
 
 function Signup3Screen({ navigation }){
     const [selectedOption, setSelectedOption] = useState(null);
     const [erro, setErro] = useState(null);
+
+    const { updateUser } = useUpdateUser();
 
   // Função para alternar a seleção
     const handleSelect = (option) => {
@@ -21,15 +24,7 @@ function Signup3Screen({ navigation }){
             if (selectedOption) {
                 addCadastro({avatar: selectedOption});
                 const response = await signup(cadastro);
-                addUser({
-                    nome: cadastro.nome,
-                    nascimento: cadastro.nascimento,
-                    sexo: cadastro.sexo,
-                    email: cadastro.email,
-                    senha: cadastro.senha,
-                    avatar: cadastro.avatar,
-                    userId: response.data
-                });
+                await updateUser(response);
                 navigation.navigate('Login');
             }
         } catch (erro){

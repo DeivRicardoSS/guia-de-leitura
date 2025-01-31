@@ -5,23 +5,28 @@ import Input1 from "../components/Input1";
 import Button1 from "../components/Button1";
 import Root from "../styles/root";
 import { livroAberto } from "../localdata/LivroAberto";
-import { user, addUser } from "../localdata/User";
 import { useFocusEffect } from "@react-navigation/native";
 import { ip, updateLivro } from "../api/api";
+import { useUser, useUpdateUser } from "../localdata/User";
 
 function LivroScreen({ navigation }){
+    let { user } = useUser();
+    let { updateUser } = useUpdateUser();
+
     let [img, setImg] = useState(null);
     let [titulo, setTitulo] = useState(null);
     let [autor, setAutor] = useState(null);
     let [paginas, setPaginas] = useState(null);
     let [paginasLidas, setPaginasLidas] = useState(null);
     let [popup, setPopup] = useState(false);
+    let [btn, setBtn] = useState('Continuar Leitura');
 
     let[novasPaginas, setNovasPaginas] = useState(null);
 
     let [segundos, setSegundos] = useState(0);
     let [minutos, setMinutos] = useState(0);
     let [horas, setHoras] = useState(0);
+
 
     useFocusEffect(
         useCallback(()=>{
@@ -30,6 +35,10 @@ function LivroScreen({ navigation }){
             setAutor(user.livros[livroAberto].autor);
             setPaginas(user.livros[livroAberto].quantPaginas);
             setPaginasLidas(user.livros[livroAberto].pagAtual);
+
+            if (user.livros[livroAberto].pagAtual === user.livros[livroAberto].quantPaginas) {
+                setBtn('Voltar para a Biblioteca');
+            }
         }, [])
     );
 
@@ -75,7 +84,7 @@ function LivroScreen({ navigation }){
             });
             console.log(response);
             if (response) {
-                addUser(response);
+                updateUser(response);
             }
         } catch (error) {
             console.log(error);
@@ -91,9 +100,9 @@ function LivroScreen({ navigation }){
             />
             <Text style={styles.title}>{titulo}</Text>
             <Text style={styles.subtitle}>{autor}</Text>
-            <Text style={styles.paginas}>{paginas} Páginas</Text>
+            <Text style={styles.paginas}>{paginasLidas} / {paginas} Páginas</Text>
             <View style={styles.progresso}>
-                <Text >{(paginasLidas/paginas)*100}% Completo</Text>
+                <Text >{parseInt((paginasLidas/paginas)*100)}% Completo</Text>
                 <View style={{flex: 1, backgroundColor: Root.fundo2, height: 5, borderRadius: 5, overflow: 'hidden',}}>
                     <View style={{
                         backgroundColor: Root.primaria,
@@ -103,10 +112,15 @@ function LivroScreen({ navigation }){
                 </View>
             </View>
             <Button1
-                value={"Continuar Leitura"}
+                value={btn}
                 onPress={() => {
-                    setPopup(true);
-                    startTimer();
+                    if (paginasLidas < paginas) {
+                        setPopup(true);
+                        startTimer();
+                    } else {
+                        navigation.goBack();
+                    }
+                    
                 }}
             />
             <Modal

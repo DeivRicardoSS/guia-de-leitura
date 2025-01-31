@@ -3,9 +3,12 @@ import { loginUser } from "../api/api";
 import React, {useState} from "react";
 import Input1 from "../components/Input1";
 import Button1 from "../components/Button1";
-import { addUser } from "../localdata/User";
+import { useUser, useUpdateUser } from "../localdata/User";
 
 function LoginScreen({ navigation }){
+    const { user } = useUser();
+    const { updateUser } = useUpdateUser();
+
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [error, setError] = useState('');
@@ -16,15 +19,19 @@ function LoginScreen({ navigation }){
             return;
         }
         try {
+            console.log('fazendo requisição')
             const response = await loginUser({email, senha});
-            if(response.success){
-                addUser(response.response);
-                navigation.navigate('Home');
+            console.log('requisição sucedida')
+            if(response){
+                console.log('salvando dados do usuario')
+                updateUser(response);
+                navigation.navigate("Home");
             } else {
                 setError(response.error);
+                alert(response.error);
             }
         } catch (error) {
-            setError(error)
+            console.log(error);
         }
     }
 
@@ -39,7 +46,7 @@ function LoginScreen({ navigation }){
                 onChange={setSenha}
                 secureTextEntry={true}
             />
-            {error? <Text style={{color: 'red'}}>{error}</Text> : null}
+            <Text style={{color: 'red'}}>{error}</Text>
             <Button1
                 value={"Iniciar Sessão"}
                 onPress={handleLogin}

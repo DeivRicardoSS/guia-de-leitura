@@ -6,25 +6,25 @@ import MedalhaIcon from '../svg/Medalha.svg';
 import TrofeuIcon from '../svg/Trofeu.svg';
 
 
-function Estatisticas() {
+function Estatisticas({xp, livros}) {
     return (
         <View style={styles.container}>
             <View style={styles.card}>
                 <LivroIcon/>
                 <View>
-                    <Text style={styles.bold}>10</Text>
-                    <Text style={styles.text}>Dias de Lidas</Text>
+                    <Text style={styles.bold}>{livros}</Text>
+                    <Text style={styles.text}>Livros</Text>
                 </View>
             </View>
             <View style={styles.card}> 
                 <XPIcon/>
                 <View>
-                    <Text style={styles.bold}>100</Text>
+                    <Text style={styles.bold}>{xp}</Text>
                     <Text style={styles.text}>Total de XP</Text>
                 </View>
             </View>
 
-            <View style={styles.card}>
+            {/* <View style={styles.card}>
                 <TrofeuIcon/>
                 <View>
                     <Text style={styles.bold}>Ouro</Text>
@@ -38,7 +38,7 @@ function Estatisticas() {
                     <Text style={styles.bold}>10</Text>
                     <Text style={styles.text}>Pódios</Text>
                 </View>
-            </View>
+            </View> */}
             
         </View>
     );

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, Alert, ScrollView, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, Image, Alert, ScrollView, ActivityIndicator, Platform } from 'react-native';
 import { useState } from 'react';
 import Input1 from '../components/Input1';
 import Button1 from '../components/Button1';
@@ -8,9 +8,12 @@ import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import Root from '../styles/root';
 import { confirmUser, ip } from '../api/api';
-import { user, addUser } from '../localdata/User';
+import { useUser, useUpdateUser } from '../localdata/User';
 
 function NovoLivroScreen({ navigation }) {
+    const { user } = useUser();
+    const { updateUser } = useUpdateUser();
+
     const [loading, setLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
@@ -21,7 +24,29 @@ function NovoLivroScreen({ navigation }) {
     const [paginas, setPaginas] = useState('');
     const [paginasLidas, setPaginasLidas] = useState('');
 
+    const handlePickImageWeb = () => {
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*';
+        fileInput.onchange = (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    setPhoto(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+        fileInput.click();
+    };
+
     const handlePickImage = async () => {
+        if (Platform.OS === 'web') {
+            handlePickImageWeb();
+            return;
+        }
+
         const { status } = await ImagePicker.requestCameraPermissionsAsync();
         if (status !== "granted") {
             alert("Precisamos da permissão para acessar a câmera!");
@@ -29,7 +54,6 @@ function NovoLivroScreen({ navigation }) {
         }
 
         try {
-            
             const result = await ImagePicker.launchCameraAsync({
                 allowsEditing: true,
                 aspect: [3, 4],
@@ -47,7 +71,7 @@ function NovoLivroScreen({ navigation }) {
 
     const validateInputs = () => {
         if (!photo || !nome || !autor || !genero || !paginas || !paginasLidas) {
-            alert('Por favor, preencha todos os campos.' + `nome: ${nome}, autor: ${autor}, genero: ${genero}, paginas: ${paginas}, paginasLidas: ${paginasLidas}, photo: ${photo}`);
+            alert('Por favor, preencha todos os campos.');
             return false;
         }
         if (isNaN(paginas) || isNaN(paginasLidas)) {
@@ -64,7 +88,12 @@ function NovoLivroScreen({ navigation }) {
     const enviarLivro = async () => {
         setLoading(true);
         setShowModal(true);
-        if (!validateInputs()) return;
+
+        if (!validateInputs()) {
+            setLoading(false);
+            setShowModal(false);
+            return;
+        }
 
         const formData = new FormData();
         formData.append('nome', nome);
@@ -72,12 +101,19 @@ function NovoLivroScreen({ navigation }) {
         formData.append('genero', genero);
         formData.append('quantPaginas', paginas);
         formData.append('pagAtual', paginasLidas);
-        
-        formData.append('file', {
-            uri: photo,
-            name: 'photo.jpg',
-            type: 'image/jpeg',
-        })
+
+        if (Platform.OS === 'web') {
+            const fileInput = document.querySelector('input[type="file"]');
+            if (fileInput && fileInput.files[0]) {
+                formData.append('file', fileInput.files[0]);
+            }
+        } else {
+            formData.append('file', {
+                uri: photo,
+                name: 'photo.jpg',
+                type: 'image/jpeg',
+            });
+        }
 
         formData.append('userId', user.userId);
 
@@ -87,28 +123,31 @@ function NovoLivroScreen({ navigation }) {
                     'Content-Type': 'multipart/form-data',
                 },
             });
+
             Alert.alert('Livro cadastrado com sucesso!');
             setPhoto(null);
             setNome('');
             setAutor('');
             setGenero('');
-            const usuario = await confirmUser();
-            addUser(usuario);
-            console.log(usuario)
-            console.log(user);
-            
+            setPaginas('');
+            setPaginasLidas('');
+
+            updateUser(response.data);
+            console.log('response', response.data);
+            console.log('user', user.livros);
+
+            navigation.navigate('Livros');
         } catch (error) {
-            alert('Erro ao cadastrar livro: ' + error.message);
+            console.error('Erro ao cadastrar livro:', error);
+            alert('Erro ao cadastrar livro: ' + (error.response?.data?.message || error.message));
         } finally {
             setLoading(false);
             setShowModal(false);
-            navigation.navigate('Livros');
         }
     };
 
     return (
         <ScrollView style={styles.container}>
-            {/* Preview da Imagem */}
             <View style={styles.previewContainer}>
                 {photo ? (
                     <Image source={{ uri: photo }} style={styles.image} />
@@ -118,21 +157,17 @@ function NovoLivroScreen({ navigation }) {
             </View>
 
             <Button2 
-            value="Tirar Foto" 
-            onPress={handlePickImage} 
-            style={{
-                marginBottom: 20
-            }}
+                value="Tirar Foto" 
+                onPress={handlePickImage} 
+                style={{ marginBottom: 20 }}
             />
 
-            {/* Inputs */}
             <View style={styles.inputsContainer}>
                 <Input1 placeholder="Título" onChange={setNome} />
                 <Input1 placeholder="Autor" onChange={setAutor} />
                 <Input1 placeholder="Gênero" onChange={setGenero} />
             </View>
 
-            {/* Inputs de Páginas */}
             <Text style={styles.sectionTitle}>Páginas</Text>
             <View style={styles.pagesContainer}>
                 <Input1
@@ -140,7 +175,6 @@ function NovoLivroScreen({ navigation }) {
                     placeholder="Quantidade de Páginas"
                     keyboardType="numeric"
                     onChange={setPaginas}
-        
                 />
                 <Input1
                     style={styles.input}
@@ -150,18 +184,17 @@ function NovoLivroScreen({ navigation }) {
                 />
             </View>
 
-            {/* Botão de Enviar */}
             <Button1 
-            value="Adicionar Livro" 
-            onPress={enviarLivro} 
-            style={{marginTop: 20}}
+                value="Adicionar Livro" 
+                onPress={enviarLivro} 
+                style={{ marginTop: 20 }}
             />
 
-            {loading ? (
-            <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color={Root.primaria} />
-            </View>
-            ): null}
+            {loading && (
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator size="large" color={Root.primaria} />
+                </View>
+            )}
         </ScrollView>
     );
 }
@@ -212,7 +245,6 @@ const styles = StyleSheet.create({
         top: '50%',
         left: '50%',
         transform: [{ translateX: '-50%' }, { translateY: '-50%' }],
-        
         borderColor: Root.primaria,
         justifyContent: 'center',
         alignItems: 'center',
