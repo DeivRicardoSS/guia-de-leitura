@@ -64,7 +64,7 @@ function Signup3Screen({ navigation }){
                     style={styles.img}
                     />
                 </TouchableOpacity>
-                {erro? (<Text>{erro}</Text>) : null}
+                
             </View>
             <Button1
                 value={'Continuar'}

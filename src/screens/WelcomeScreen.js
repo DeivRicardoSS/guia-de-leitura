@@ -8,6 +8,7 @@ import { confirmUser } from "../api/api";
 import { useEffect } from "react";
 import * as SecureStore from 'expo-secure-store';
 import { useUser, useUpdateUser } from "../localdata/User";
+import { addUserId } from "../api/api";
 
 function WelcomeScreen({navigation}) {
     const { user } = useUser();
@@ -22,7 +23,7 @@ function WelcomeScreen({navigation}) {
                     // Converte para objeto JavaScript, já que SecureStore armazena como string
                     const usuarioObj = JSON.parse(usuario); 
                     const response = await confirmUser({ userId: usuarioObj.userId });
-
+                    
                     console.log("response", response);
 
                     // Verifica se o login foi bem-sucedido e navega para a tela 'Home'
@@ -30,7 +31,7 @@ function WelcomeScreen({navigation}) {
                         await updateUser(response)
                         console.log('response', response.userId);
                         console.log('local', user.userId)
-
+                        addUserId(response.userId);
                         navigation.navigate("Home");
                     }
                 }

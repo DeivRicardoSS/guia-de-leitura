@@ -1,9 +1,10 @@
 import { View, Text, SafeAreaView, TextInput, Button, StyleSheet } from "react-native";
-import { loginUser } from "../api/api";
+import { loginUser, addUserId } from "../api/api";
 import React, {useState} from "react";
 import Input1 from "../components/Input1";
 import Button1 from "../components/Button1";
 import { useUser, useUpdateUser } from "../localdata/User";
+
 
 function LoginScreen({ navigation }){
     const { user } = useUser();
@@ -25,6 +26,7 @@ function LoginScreen({ navigation }){
             if(response){
                 console.log('salvando dados do usuario')
                 updateUser(response);
+                addUserId(response.userId);
                 navigation.navigate("Home");
             } else {
                 setError(response.error);
