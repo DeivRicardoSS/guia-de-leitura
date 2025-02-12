@@ -20,7 +20,7 @@ function LivrosScreen({navigation}) {
                 user.livros.map((livro, index) => (
                     <Livro
                         key={index}
-                        img={`http://192.168.0.103:3000/${livro.link}`}
+                        img={`http://10.81.1.13:3000/${livro.link}`}
                         titulo={livro.nome}
                         autor={livro.autor}
                         progresso={parseInt((livro.pagAtual / livro.quantPaginas) * 100 )}

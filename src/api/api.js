@@ -5,7 +5,7 @@ export function addUserId(id) {
     userId = id;
 }
 
-export const ip = '192.168.0.103';
+export const ip = '10.81.1.13';
 
 const API = axios.create({
 baseURL: `http://${ip}:3000`
